@@ -5,7 +5,7 @@ format short
 %% ------------ STEP 1: Define LP system ------------
 % A = constraint coefficient matrix
 A = [2 3 -1 4;
-     1 -2 6  -7];
+     1 -2 6 -7];
 
 % Objective function: Z = 2x1 + 3x2 + 4x3 + 7x4
 C = [2 3 4 7];

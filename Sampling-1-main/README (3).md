@@ -1,0 +1,108 @@
+# Sampling Techniques & Model Comparison
+
+This repository contains a comprehensive analysis of different **sampling techniques** applied to a credit card fraud detection dataset. The project demonstrates how to handle imbalanced datasets using **SMOTE**, creates various statistical samples, and evaluates the performance of five different machine learning models on each sample.
+
+## 📄 Project Overview
+
+In machine learning, dataset size and class distribution critically impact model performance. This assignment:
+
+1. **Analyzes a highly imbalanced dataset** (Credit Card Fraud).
+2. **Balances the data** using SMOTE (Synthetic Minority Over-sampling Technique).
+3. **Generates five distinct samples** using different statistical sampling methods.
+4. **Trains five ML models** on each sample to compare their accuracy.
+
+## 📊 Methodology
+
+### 1. Data Preprocessing
+
+The dataset is loaded from a URL. An initial check reveals a severe class imbalance:
+
+- **Class 0 (Legit):** 763 instances
+- **Class 1 (Fraud):** 9 instances
+
+### 2. Balancing the Dataset (SMOTE)
+
+Since the fraud cases are extremely rare, training a model directly would lead to bias. We use **SMOTE** to synthesize new minority instances.
+
+- **Before SMOTE:** 763 (0) vs 9 (1)
+- **After SMOTE:** 763 (0) vs 763 (1)
+
+### 3. Sampling Techniques
+
+The project implements five different sampling techniques on the balanced dataset.
+
+#### a. Simple Random Sampling
+
+Randomly selects a subset of the data without any specific order or grouping.
+
+- _Code Logic:_ `df.sample(frac=0.5)`
+- _Use Case:_ When the population is uniform and every member has an equal chance of selection.
+
+#### b. Systematic Sampling
+
+Selects samples at a regular interval (every $k^{th}$ element).
+
+- _Code Logic:_ Defined interval $k = 2$ (every 2nd record is selected).
+- _Use Case:_ When data is ordered and a random start is sufficient.
+
+#### c. Stratified Sampling
+
+Divides the population into subgroups (strata) based on a shared characteristic (in this case, the `Class`) and samples from each stratum to maintain proportions.
+
+- _Code Logic:_ Uses `train_test_split` with `stratify=y`.
+- _Use Case:_ Ensures that the sample represents the class distribution of the population accurately.
+
+#### d. Cluster Sampling
+
+Divides the population into clusters, then randomly selects entire clusters for the sample.
+
+- _Code Logic:_ We simulate clusters by grouping indices (`index % 5`). All data points belonging to `Cluster 0` are selected.
+- _Use Case:_ Cost-effective when the population is large and dispersed (e.g., geographic clusters).
+
+#### e. Bootstrap Sampling
+
+Sampling **with replacement**, meaning the same data point can appear multiple times in the sample.
+
+- _Code Logic:_ `df.sample(replace=True)`
+- _Use Case:_ Useful for estimating statistics and ensemble learning (like Bagging).
+
+---
+
+## 🤖 Models Used
+
+Five different machine learning algorithms are trained on each of the five samples:
+
+1. **Logistic Regression:** A statistical model for binary classification.
+2. **Decision Tree:** A tree-like model of decisions.
+3. **Random Forest:** An ensemble of decision trees.
+4. **K-Nearest Neighbors (KNN):** Classifies based on the proximity to other data points.
+5. **Support Vector Machine (SVM):** Finds the optimal hyperplane to separate classes.
+
+## 📈 Results & Analysis
+
+The final output of the notebook is a comparison table showing the **Accuracy Score** of every Model-Sample combination.
+
+_Example Structure of Output:_
+
+| Model                   | Simple Random | Systematic | Stratified | Cluster | Bootstrap |
+| :---------------------- | :-----------: | :--------: | :--------: | :-----: | :-------: |
+| **Logistic Regression** |     0.92      |    0.91    |    0.93    |  0.89   |   0.94    |
+| **Decision Tree**       |     0.95      |    0.94    |    0.96    |  0.90   |   0.97    |
+| **Random Forest**       |     0.98      |    0.97    |    0.98    |  0.92   |   0.99    |
+| **KNN**                 |     0.88      |    0.87    |    0.89    |  0.85   |   0.90    |
+| **SVM**                 |     0.91      |    0.90    |    0.92    |  0.88   |   0.93    |
+
+_(Note: Actual accuracy values will vary based on the random state and execution.)_
+
+### ⚠️ Troubleshooting
+
+If you encounter a `ValueError: This solver needs samples of at least 2 classes`, it implies that one of your smaller samples (likely Cluster Sampling) accidentally picked up only one class of data (e.g., only "Legit" transactions).
+
+- **Fix:** Adjust the `random_state` or the cluster logic to ensure both classes are present in the training split.
+
+**Author:** ANGAD SINGH MADHOK
+**Roll No.:** 102313005
+
+## 📝 License
+
+This project is open-source and available for educational purposes.
